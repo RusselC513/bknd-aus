@@ -7,6 +7,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::post('quote', 'App\Http\Controllers\API\QuoteController@send');
+
 Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
     // --------------- Register and Login ----------------//
     Route::post('register', 'AuthenticationController@register')->name('register');

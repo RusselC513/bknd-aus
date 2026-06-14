@@ -9,10 +9,10 @@ RUN apt-get update && apt-get install -y \
 # Habilita el mod_rewrite de Apache
 RUN a2enmod rewrite
 
-# Apunta Apache al public/ de Laravel
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -i 's|/var/www/html|${APACHE_DOCUMENT_ROOT}|g' /etc/apache2/sites-available/000-default.conf \
-    && sed -i 's|/var/www/html|${APACHE_DOCUMENT_ROOT}|g' /etc/apache2/apache2.conf
+# Apunta Apache al public/ de Laravel con AllowOverride
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
+    && echo '<Directory /var/www/html/public>\n    AllowOverride All\n    Require all granted\n</Directory>' \
+    >> /etc/apache2/sites-available/000-default.conf
 
 # Copia Composer desde la imagen oficial
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

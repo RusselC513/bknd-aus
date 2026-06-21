@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Mail\QuoteMail;
+use App\Mail\QuoteConfirmationMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -24,6 +25,7 @@ class QuoteController extends Controller
             ]);
 
             Mail::to('glowandharmony1@gmail.com')->send(new QuoteMail($validated));
+            Mail::to($validated['email'])->send(new QuoteConfirmationMail($validated));
 
             return response()->json([
                 'status'  => 'success',
